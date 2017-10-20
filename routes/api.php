@@ -20,6 +20,8 @@ Route::resource('/items', 'ItemController', ['except' => ['create', 'edit']]);
 
 Route::resource('/tests', 'TestController', ['except' => ['create', 'edit']]);
 
+Route::resource('/options', 'OptionController', ['except' => ['create', 'edit']]);
+
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

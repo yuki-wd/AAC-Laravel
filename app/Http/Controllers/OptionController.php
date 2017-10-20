@@ -14,7 +14,7 @@ class OptionController extends Controller
      */
     public function index()
     {
-        //
+        return response(Option::all());
     }
 
     /**
@@ -35,7 +35,19 @@ class OptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // ここに仮で答え合わせの処理を書く（本来はstoreに書くべきではない）
+        $test_id = $request->testId;
+        $question_cnt = count(\App\Question::where('test_id', $test_id)->get());
+        $correct_cnt = 0;
+        foreach ($request->answers as $key => $value) {
+          $option_id = $value['answerId'];
+          $option_is_answer = \App\Option::where('id', $option_id)->get()->first()->isAnswer;
+          if ($option_is_answer === 1) {
+            $correct_cnt++;
+          }
+        }
+        $result = array('question_cnt' => $question_cnt, 'correct_cnt' => $correct_cnt);
+        return response($result);
     }
 
     /**
@@ -46,7 +58,7 @@ class OptionController extends Controller
      */
     public function show(Option $option)
     {
-        //
+        return response($option);
     }
 
     /**
