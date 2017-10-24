@@ -40,6 +40,7 @@ class TestController extends Controller
         foreach ($array['questions'] as $key => $value) {
             $question = new Question();
             $question->content = $value['content'];
+            $question->score = $value['score'];
             $question->test_id = \App\Test::orderBy('id', 'desc')->first()->id;
             $question->save();
             foreach ($value['options'] as $optionkey => $optionvalue) {
@@ -67,9 +68,11 @@ class TestController extends Controller
         foreach ($questions as $key => $value) {
             $question_id = $value->id;
             $question_content = $value->content;
+            $question_score = $value->score;
             $options = DB::table('options')->where('question_id', $question_id)->get();
             $question_arr["id"] = $question_id;
             $question_arr["content"] = $question_content;
+            $question_arr["score"] = $question_score;
             $question_arr["options"] = $options;
             array_push($test_arr["questions"], $question_arr);
         }

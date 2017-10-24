@@ -39,14 +39,18 @@ class OptionController extends Controller
         $test_id = $request->testId;
         $question_cnt = count(\App\Question::where('test_id', $test_id)->get());
         $correct_cnt = 0;
+        $score = 0;
+        $total_score = \App\Question::where('test_id', $test_id)->sum('score');
         foreach ($request->answers as $key => $value) {
           $option_id = $value['answerId'];
           $option_is_answer = \App\Option::where('id', $option_id)->get()->first()->isAnswer;
+          $question_id = \App\Option::where('id', $option_id)->get()->first()->question_id;
           if ($option_is_answer === 1) {
             $correct_cnt++;
+            $score += \App\Question::where('id', $question_id)->get()->first()->score;
           }
         }
-        $result = array('question_cnt' => $question_cnt, 'correct_cnt' => $correct_cnt);
+        $result = array('question_cnt' => $question_cnt, 'correct_cnt' => $correct_cnt, 'score' => $score, 'total_score' => $total_score);
         return response($result);
     }
 
