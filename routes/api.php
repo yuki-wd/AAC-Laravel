@@ -22,6 +22,14 @@ Route::resource('/tests', 'TestController', ['except' => ['create', 'edit']]);
 
 Route::resource('/options', 'OptionController', ['except' => ['create', 'edit']]);
 
+Route::group(['middleware' => 'api'], function () {
+    Route::post('authenticate',  'AuthenticateController@authenticate');
+
+    Route::group(['middleware' => 'jwt.auth'], function () {
+        Route::get('me',  'AuthenticateController@getCurrentUser');
+    });
+});
+
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
