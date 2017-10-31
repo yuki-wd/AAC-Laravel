@@ -61,6 +61,7 @@ class TestController extends Controller
      */
     public function show(Request $request, Test $test)
     {
+        logger($request);
         $test_id = $test->id;
         $questions = DB::table('questions')->where('test_id', $test_id)->get();
         $test_arr = json_decode(json_encode($test), true);
